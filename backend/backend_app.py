@@ -69,5 +69,20 @@ def update_post(id):
 
     return jsonify(find_post), 200
 
+
+@app.route('/api/posts/search', methods=['GET'])
+def search_posts():
+    title = request.args.get('title')
+    content = request.args.get('content')
+
+    filtered = POSTS
+
+    if title:
+        filtered = list(filter(lambda post: title in post['title'], filtered))
+    if content:
+        filtered = list(filter(lambda post: content in post['content'], filtered))
+
+    return jsonify(filtered), 200
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5002, debug=True)
