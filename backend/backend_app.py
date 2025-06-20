@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -13,6 +13,27 @@ POSTS = [
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
     return jsonify(POSTS)
+
+
+@app.route('/api/posts', methods=['POST'])
+def add_post():
+    # here go's the endpoint for adding a post
+    data = request.get_json()
+
+    # Validation
+    if not data:
+        return jsonify({"error": "No input data provided"}), 400
+    if 'title' not in data or 'content' not in data:
+        return jsonify({"error": "Missing title or content"}), 400
+
+    new_post = {
+        'id': POSTS[-1]['id'] + 1 if POSTS else 1,
+        'title': data['title'],
+        'content': data['content'],
+    }
+
+    POSTS.append(new_post)
+    return jsonify(new_post), 201  # 201 = Created
 
 
 if __name__ == '__main__':
