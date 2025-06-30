@@ -13,9 +13,6 @@ POSTS = [
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
     sort = request.args.get('sort')
-    direction = request.args.get('direction')
-
-    sort = request.args.get('sort')
     direction = request.args.get('direction', 'asc')
 
     valid_sort_fields = {'title', 'content'}
