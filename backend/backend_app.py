@@ -94,14 +94,18 @@ def search_posts():
     title = request.args.get('title')
     content = request.args.get('content')
 
-    filtered = POSTS
+    # No filters case
+    if not title and not content:
+        return jsonify(POSTS), 200
 
-    if title:
-        filtered = list(filter(lambda post: title in post['title'], filtered))
-    if content:
-        filtered = list(filter(lambda post: content in post['content'], filtered))
+    filtered = []
+    for post in POSTS:
+        title_match = title and title in post['title']
+        content_match = content and content in post['content']
+
+        if title_match or content_match:
+            filtered.append(post)
 
     return jsonify(filtered), 200
-
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5002, debug=True)
