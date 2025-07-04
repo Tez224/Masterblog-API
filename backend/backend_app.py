@@ -46,7 +46,7 @@ def add_post():
         return jsonify({"error": "Missing title or content"}), 400
 
     new_post = {
-        'id': POSTS[-1]['id'] + 1 if POSTS else 1,
+        'id': max([post['id'] for post in POSTS], default=0) + 1,
         'title': data['title'],
         'content': data['content'],
     }
