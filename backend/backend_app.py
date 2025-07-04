@@ -12,6 +12,10 @@ POSTS = [
 
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
+    """
+    endpoint for getting all posts
+    :return: json with all posts
+    """
     sort = request.args.get('sort')
     direction = request.args.get('direction', 'asc')
 
@@ -36,6 +40,10 @@ def get_posts():
 
 @app.route('/api/posts', methods=['POST'])
 def add_post():
+    """
+    endpoint for adding a new post
+    :return: json with new post and 201 created
+    """
     # here go's the endpoint for adding a post
     data = request.get_json()
 
@@ -61,6 +69,11 @@ def add_post():
 
 @app.route('/api/posts/<int:id>', methods=['DELETE'])
 def delete_post(id):
+    """
+    endpoint for deleting a post
+    :param id: id of post
+    :return: json with deleted post with ok, 200
+    """
     # Checks if id in POSTS id's
     found_post = next((post for post in POSTS if post['id'] == id), None)
 
@@ -73,6 +86,12 @@ def delete_post(id):
 
 @app.route('/api/posts/<int:id>', methods=['PUT'])
 def update_post(id):
+    """
+    Endpoint for updating a post. Checks user input for emptiness
+    or too loong inputs.
+    :param id: id of post
+    :return: JSON with updated post, 200
+    """
     data = request.get_json()
 
     if not data:
@@ -99,6 +118,10 @@ def update_post(id):
 
 @app.route('/api/posts/search', methods=['GET'])
 def search_posts():
+    """
+    endpoint for searching posts for title or content
+    :return: JSON with the fitting posts, or all posts if nothing is found
+    """
     title = request.args.get('title')
     content = request.args.get('content')
 
@@ -115,5 +138,7 @@ def search_posts():
             filtered.append(post)
 
     return jsonify(filtered), 200
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5002, debug=True)
