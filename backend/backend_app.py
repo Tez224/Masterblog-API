@@ -74,7 +74,7 @@ def update_post(id):
     if not data:
         return jsonify({"error": "No input data provided"}), 400
     if 'title' not in data and 'content' not in data:
-        return jsonify({"error": "Missing input no title or content provided."}), 400
+        return jsonify({"error": "Missing input, at least one of title or content must be provided."}), 400
 
     find_post = next((post for post in POSTS if post['id'] == id), None)
 
