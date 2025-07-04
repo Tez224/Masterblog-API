@@ -44,6 +44,10 @@ def add_post():
         return jsonify({"error": "No input data provided"}), 400
     if 'title' not in data or 'content' not in data:
         return jsonify({"error": "Missing title or content"}), 400
+    if len(data['title']) > 1000:
+        return jsonify({"error": "Title too long"}), 400
+    if len(data['content']) > 1000:
+        return jsonify({"error": "Content too long"}), 400
 
     new_post = {
         'id': max([post['id'] for post in POSTS], default=0) + 1,
@@ -75,6 +79,10 @@ def update_post(id):
         return jsonify({"error": "No input data provided"}), 400
     if 'title' not in data and 'content' not in data:
         return jsonify({"error": "Missing input, at least one of title or content must be provided."}), 400
+    if 'title' in data and len(data['title']) > 100:
+        return jsonify({"error": "Title too long"}), 400
+    if 'content' in data and len(data['content']) > 500:
+        return jsonify({"error": "Content too long"}), 400
 
     find_post = next((post for post in POSTS if post['id'] == id), None)
 
